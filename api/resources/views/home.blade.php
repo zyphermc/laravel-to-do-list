@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My To-Do List</title>
+    <title>To-Do List</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.css"
@@ -15,7 +15,7 @@
 <body class="text-white">
     <div class="w-1/2 mx-auto py-12">
         <h1 class="text-4xl font-bold text-center mb-8">To-Do List</h1>
-        <form method="post" action="{{ route('saveItem') }}" class="flex mb-4">
+        <form method="post" action="{{ route('createItem') }}" class="flex mb-4">
             {{ csrf_field() }}
             <input
                 class="flex-1 rounded-l-lg py-2 px-4 border-t mr-0 border-b border-l text-white bg-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-600 placeholder-gray-500 placeholder-opacity-75"

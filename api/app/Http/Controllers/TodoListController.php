@@ -21,7 +21,7 @@ class TodoListController extends Controller
         Session::flash("success", "Task marked as completed.");
         return redirect("/");
     }
-    public function saveItem(Request $request)
+    public function createItem(Request $request)
     {
 
         $request->validate([
@@ -65,5 +65,4 @@ class TodoListController extends Controller
 
         return redirect("/");
     }
-
 }

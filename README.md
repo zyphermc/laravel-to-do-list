@@ -31,7 +31,7 @@
    
 3. Generate .env file
    ```sh
-   php artisan key:generate //Generate .env file and vendor files
+   php artisan key:generate
    ```
    
 4. Configure database configuration in `.env`

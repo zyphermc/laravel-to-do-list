@@ -29,12 +29,7 @@
    composer install
    ```
    
-3. Generate .env file
-   ```sh
-   php artisan key:generate
-   ```
-   
-4. Configure database configuration in `.env`
+3. Rename `.env.example` to `.env` then configure database configuration 
    ```php
    DB_CONNECTION=mysql
    DB_HOST=<host>
@@ -42,6 +37,11 @@
    DB_DATABASE=<db> 
    DB_USERNAME=<username>     
    DB_PASSWORD=<password> 
+   ```
+   
+4. Set the APP_KEY value in your .env file 
+   ```sh
+   php artisan key:generate
    ```
    
 5. Migrate schema to database

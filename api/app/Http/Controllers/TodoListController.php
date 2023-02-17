@@ -13,13 +13,34 @@ class TodoListController extends Controller
         return view("home", ["listItems" => ListItem::where("is_complete", 0)->get()]);
     }
 
+    public function getItems()
+    {
+        $items = ListItem::where("is_complete", 0)->get();
+
+        $itemArray = [];
+
+        foreach ($items as $item) {
+            $itemArray[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+            ];
+        }
+
+        return response()->json($itemArray);
+    }
+
     public function markComplete($id)
     {
         $listItem = ListItem::find($id);
         $listItem->is_complete = 1;
         $listItem->save();
-        Session::flash("success", "Task marked as completed.");
-        return redirect("/");
+
+        return response()->json([
+            'flash' => [
+                'type' => 'success',
+                'message' => 'Item marked as complete.'
+            ]
+        ]);
     }
     public function createItem(Request $request)
     {
@@ -32,9 +53,15 @@ class TodoListController extends Controller
         $newListItem->name = $request->name;
         $newListItem->is_complete = 0;
         $newListItem->save();
-        Session::flash("success", "Task has been added.");
 
-        return redirect("/");
+        return response()->json([
+            "id" => $newListItem->id,
+            "name" => $newListItem->name,
+            'flash' => [
+                'type' => 'success',
+                'message' => 'Item successfully created.'
+            ]
+        ]);
     }
 
     public function editItem($id)
@@ -53,16 +80,24 @@ class TodoListController extends Controller
         $listItem->name = $request->input("name");
         $listItem->save();
 
-        Session::flash("success", "Task has been updated successfully.");
-        return redirect("/");
+        return response()->json([
+            'flash' => [
+                'type' => 'success',
+                'message' => 'Item successfully updated.'
+            ]
+        ]);
     }
 
     public function deleteItem($id)
     {
         $listItem = ListItem::find($id);
         $listItem->delete();
-        Session::flash("success", "Task has been deleted.");
 
-        return redirect("/");
+        return response()->json([
+            'flash' => [
+                'type' => 'success',
+                'message' => 'Item successfully deleted.'
+            ]
+        ]);
     }
 }

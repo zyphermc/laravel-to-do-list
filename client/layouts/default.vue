@@ -1,9 +1,14 @@
 <template>
     <div>
-        <NavBar />
+        <header>
+            <NavBar />
+        </header>
         <div class="bg-gray-800 min-h-screen">
-            <Nuxt/>
+            <Nuxt />
         </div>
-        
+        <footer>
+            <FooterComponent />
+        </footer>
+
     </div>
 </template>

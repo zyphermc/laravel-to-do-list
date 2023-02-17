@@ -15,6 +15,9 @@
 </template>
 <script>
 export default {
+    head:{
+        title: "Edit Form"
+    },
     data() {
         return {
             name: "",

@@ -30,7 +30,7 @@
                 </div>
             </li>
         </ul>
-</div>
+    </div>
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
                 name: this.newItemName,
             });
 
-            if (response.data.length > 0) {
+            if (response.data.flash.type != "error") {
                 this.listItems.push({
                     id: response.data.id,
                     name: response.data.name,

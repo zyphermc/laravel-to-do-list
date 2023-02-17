@@ -4,15 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ListItem;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class TodoListController extends Controller
 {
-    public function index()
-    {
-        return view("home", ["listItems" => ListItem::where("is_complete", 0)->get()]);
-    }
-
     public function getItems()
     {
         $items = ListItem::where("is_complete", 0)->get();
@@ -21,8 +16,8 @@ class TodoListController extends Controller
 
         foreach ($items as $item) {
             $itemArray[] = [
-                'id' => $item->id,
-                'name' => $item->name,
+                "id" => $item->id,
+                "name" => $item->name,
             ];
         }
 
@@ -36,18 +31,36 @@ class TodoListController extends Controller
         $listItem->save();
 
         return response()->json([
-            'flash' => [
-                'type' => 'success',
-                'message' => 'Item marked as complete.'
+            "flash" => [
+                "type" => "success",
+                "message" => "Item marked as complete.",
+                "icon" => "done"
             ]
         ]);
     }
     public function createItem(Request $request)
     {
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             "name" => "required|unique:list_items|max:255"
-        ]);
+        ], [
+                "name.required" => "The task name is required.",
+                "name.unique" => "The task name is already taken.",
+                "name.max" => "The task name may not be greater than 255 characters."
+            ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $nameError = $errors->first("name");
+
+            return response()->json([
+                "flash" => [
+                    "type" => "error",
+                    "message" => $nameError,
+                    "icon" => "error"
+                ]
+            ]);
+        }
 
         $newListItem = new ListItem;
         $newListItem->name = $request->name;
@@ -57,33 +70,47 @@ class TodoListController extends Controller
         return response()->json([
             "id" => $newListItem->id,
             "name" => $newListItem->name,
-            'flash' => [
-                'type' => 'success',
-                'message' => 'Item successfully created.'
+            "flash" => [
+                "type" => "success",
+                "message" => "Item successfully created.",
+                "icon" => "done"
             ]
         ]);
     }
 
-    public function editItem($id)
-    {
-        $listItem = ListItem::find($id);
-        return view("edit", compact("listItem"));
-    }
 
     public function updateItem(Request $request, $id)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             "name" => "required|unique:list_items|max:255"
-        ]);
+        ], [
+                "name.required" => "The task name is required.",
+                "name.unique" => "The task name is already taken.",
+                "name.max" => "The task name may not be greater than 255 characters."
+            ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            $nameError = $errors->first("name");
+
+            return response()->json([
+                "flash" => [
+                    "type" => "error",
+                    "message" => $nameError,
+                    "icon" => "error"
+                ]
+            ]);
+        }
 
         $listItem = ListItem::find($id);
         $listItem->name = $request->input("name");
         $listItem->save();
 
         return response()->json([
-            'flash' => [
-                'type' => 'success',
-                'message' => 'Item successfully updated.'
+            "flash" => [
+                "type" => "success",
+                "message" => "Item successfully updated.",
+                "icon" => "done"
             ]
         ]);
     }
@@ -94,9 +121,10 @@ class TodoListController extends Controller
         $listItem->delete();
 
         return response()->json([
-            'flash' => [
-                'type' => 'success',
-                'message' => 'Item successfully deleted.'
+            "flash" => [
+                "type" => "success",
+                "message" => "Item successfully deleted.",
+                "icon" => "done"
             ]
         ]);
     }

@@ -32,37 +32,59 @@
         </ul>
 </div>
 </template>
-  
+
 <script>
 export default {
     data() {
         return {
             listItems: [],
-            newItemName: '',
+            newItemName: "",
         };
     },
     async fetch() {
-        const response = await this.$axios.get('http://127.0.0.1:8000/api/items');
+        const response = await this.$axios.get("http://127.0.0.1:8000/api/items");
         this.listItems = response.data;
     },
     methods: {
         async createItem() {
-            const response = await this.$axios.post('http://127.0.0.1:8000/api/createItem', {
+            const response = await this.$axios.post("http://127.0.0.1:8000/api/createItem", {
                 name: this.newItemName,
             });
-            this.listItems.push({
-                id: response.data.id,
-                name: response.data.name,
-            });
-            this.newItemName = '';
+
+            if (response.data.length > 0) {
+                this.listItems.push({
+                    id: response.data.id,
+                    name: response.data.name,
+                });
+
+                this.newItemName = "";
+            }
+
+            this.$toast.show(response.data.flash.message, {
+                icon: response.data.flash.icon,
+                type: response.data.flash.type,
+                duration: 2000,
+            })
         },
         async markComplete(id) {
-            await this.$axios.post(`http://127.0.0.1:8000/api/markComplete/` + id);
+            const response = await this.$axios.post(`http://127.0.0.1:8000/api/markComplete/` + id);
             this.listItems = this.listItems.filter((listItem) => listItem.id !== id);
+
+            this.$toast.show(response.data.flash.message, {
+                icon: response.data.flash.icon,
+                type: response.data.flash.type,
+                duration: 2000,
+            })
         },
         async deleteItem(id) {
-            await this.$axios.post(`http://127.0.0.1:8000/api/deleteItem/` + id);
+            const response = await this.$axios.post(`http://127.0.0.1:8000/api/deleteItem/` + id);
             this.listItems = this.listItems.filter((listItem) => listItem.id !== id);
+
+            this.$toast.show(response.data.flash.message, {
+                icon: response.data.flash.icon,
+                type: response.data.flash.type,
+                duration: 2000,
+            })
         },
     },
 };

@@ -17,22 +17,28 @@
 export default {
     data() {
         return {
-            name: '', // add the name property
-            id: '' // add the id property
+            name: "",
+            id: ""
         }
     },
     mounted() {
-        this.id = this.$route.params.id; // get the id from the route params
-        this.name = this.$route.params.name; // get the name from the route params
+        this.id = this.$route.params.id;
+        this.name = this.$route.params.name;
     },
     methods: {
         async submitForm() {
-            await this.$axios.post(`http://127.0.0.1:8000/api/updateItem/${this.id}`, {
+            const response = await this.$axios.post(`http://127.0.0.1:8000/api/updateItem/${this.id}`, {
                 id: this.id,
                 name: this.name
             });
 
-            this.$router.push('/');
+            this.$toast.show(response.data.flash.message, {
+                icon: response.data.flash.icon,
+                type: response.data.flash.type,
+                duration: 2000,
+            })
+
+            this.$router.push("/");
         },
     }
 }

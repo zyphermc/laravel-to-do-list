@@ -32,7 +32,7 @@ export default {
   buildModules: ["@nuxt/postcss8"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/toast", "nuxt-material-design-icons"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

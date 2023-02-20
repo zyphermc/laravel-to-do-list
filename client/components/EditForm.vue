@@ -11,26 +11,28 @@
                 <NuxtLink to="/" class="bg-gray-600 hover:bg-gray-500 rounded-md text-white px-4 py-2">Cancel</NuxtLink>
             </div>
         </form>
-</div>
+    </div>
 </template>
 <script>
 export default {
-    head:{
+    head: {
         title: "Edit Form"
     },
     data() {
         return {
             name: "",
-            id: ""
+            id: "",
+            API_URL: "",
         }
     },
     mounted() {
         this.id = this.$route.params.id;
         this.name = this.$route.params.name;
+        this.API_URL = this.$route.params.API_URL;
     },
     methods: {
         async submitForm() {
-            const response = await this.$axios.post(`http://127.0.0.1:8000/api/updateItem/${this.id}`, {
+            const response = await this.$axios.post(this.API_URL + `updateItem/${this.id}`, {
                 id: this.id,
                 name: this.name
             });

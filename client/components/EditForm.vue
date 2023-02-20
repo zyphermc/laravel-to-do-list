@@ -28,11 +28,10 @@ export default {
     mounted() {
         this.id = this.$route.params.id;
         this.name = this.$route.params.name;
-        this.API_URL = this.$route.params.API_URL;
     },
     methods: {
         async submitForm() {
-            const response = await this.$axios.post(this.API_URL + `updateItem/${this.id}`, {
+            const response = await this.$axios.post(`updateItem/${this.id}`, {
                 id: this.id,
                 name: this.name
             });

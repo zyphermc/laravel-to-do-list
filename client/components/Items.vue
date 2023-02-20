@@ -17,7 +17,7 @@
                                 Complete
                             </button>
                         </form>
-                        <NuxtLink :to="{ name: 'edit', params: { id: listItem.id, name: listItem.name, API_URL: API_URL } }"
+                        <NuxtLink :to="{ name: 'edit', params: { id: listItem.id, name: listItem.name} }"
                             class="bg-yellow-500 hover:bg-yellow-400 px-4 py-2 rounded-md mr-2 text-white">
                             Edit
                         </NuxtLink>
@@ -39,16 +39,15 @@ export default {
         return {
             listItems: [],
             newItemName: "",
-            API_URL: "http://127.0.0.1:8000/api/",
         };
     },
     async fetch() {
-        const response = await this.$axios.get(this.API_URL + "items");
+        const response = await this.$axios.get("items");
         this.listItems = response.data;
     },
     methods: {
         async createItem() {
-            const response = await this.$axios.post(this.API_URL + "createItem", {
+            const response = await this.$axios.post("createItem", {
                 name: this.newItemName,
             });
 
@@ -68,7 +67,7 @@ export default {
             })
         },
         async markComplete(id) {
-            const response = await this.$axios.post(this.API_URL + `markComplete/${id}`);
+            const response = await this.$axios.post(`markComplete/${id}`);
             this.listItems = this.listItems.filter((listItem) => listItem.id !== id);
 
             this.$toast.show(response.data.flash.message, {
@@ -78,7 +77,7 @@ export default {
             })
         },
         async deleteItem(id) {
-            const response = await this.$axios.post(this.API_URL + `deleteItem/${id}`);
+            const response = await this.$axios.post(`deleteItem/${id}`);
             this.listItems = this.listItems.filter((listItem) => listItem.id !== id);
 
             this.$toast.show(response.data.flash.message, {
